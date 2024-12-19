@@ -1,10 +1,12 @@
 import numpy as np
-import matplotlib.pylab as plt
+
+import matplotlib.pyplot as plt
 import pandas as pd
 from scipy import interpolate
 
 
 dataset=pd.read_csv('./data/data.csv',index_col=0)
+
 
 
 # Lest imagine fro a minute that what we are seing is : we are fixing a maximum mass of M=1.4 and a massimum radius of R=12 and 
