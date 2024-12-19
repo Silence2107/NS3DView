@@ -19,7 +19,6 @@ interp=interpolate.interp1d(
 
 thetalist=np.radians(np.arange(0,361,1))
 
-
 def f(r, theta):
     return interp(r)
 
@@ -30,5 +29,5 @@ FullFunction = f(rmesh, thetamesh)
 fig, ax = plt.subplots(dpi=120,subplot_kw=dict(projection='polar'))
 ax.contourf(thetamesh, rmesh, FullFunction, 100, cmap='plasma')
 
-plt.savefig('temp.pdf')
+plt.savefig('NS_thing.pdf')
 plt.show()
