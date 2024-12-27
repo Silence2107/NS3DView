@@ -1,2 +1,3 @@
 *.pdf
 NS3/*
+.vscode/*
