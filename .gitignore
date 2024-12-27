@@ -1,2 +1,4 @@
 *.pdf
+*.ipynb
 NS3/*
+.vscode/*
