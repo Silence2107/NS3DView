@@ -1,6 +1,8 @@
 import numpy as np
 
 import matplotlib.pyplot as plt
+import matplotlib
+from matplotlib import ticker
 import pandas as pd
 from scipy import interpolate
 import argparse as arg
@@ -10,6 +12,11 @@ parser = arg.ArgumentParser(description='Visualize a radial profile of a star')
 parser.add_argument(
     '-p', '--pdf', help='Path for resulting figure', default="temp.pdf")
 parser.add_argument('-c', '--csv', help='Path to radial profile csv')
+# draw opts
+parser.add_argument('--levels', help='Number of color levels', default=20, type=int)
+parser.add_argument('--log', help='Use log scale', action='store_true')
+parser.add_argument('--legend', help='Provide header for legend', default=None, type=str)
+
 args = parser.parse_args()
 
 
@@ -32,13 +39,22 @@ thetalist = np.radians(np.arange(0, 361, 1))
 def f(r, theta):
     return interp(r)
 
-
 rmesh, thetamesh = np.meshgrid(rlist, thetalist)
 
-FullFunction = f(rmesh, thetamesh)
+z = f(rmesh, thetamesh)
 
 fig, ax = plt.subplots(dpi=120, subplot_kw=dict(projection='polar'))
-ax.contourf(thetamesh, rmesh, FullFunction, 100, cmap='plasma')
+if args.log:
+    z = np.ma.masked_where(z <= 0, z)
+    profile = ax.contourf(thetamesh, rmesh, z, args.levels, cmap='plasma', locator=ticker.LogLocator())
+else:
+    profile = ax.contourf(thetamesh, rmesh, z, args.levels, cmap='plasma')
+ax.set_yticklabels([])
+ax.set_xticklabels([])
+#colorbar
+cbar = plt.colorbar(profile, ax=ax)
+if args.legend:
+    cbar.set_label(args.legend)
 
 plt.savefig(args.pdf)
 plt.show()
